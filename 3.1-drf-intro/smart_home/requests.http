@@ -40,6 +40,27 @@ Content-Type: application/json
 
 ###
 
+# добавление измерения с картинкой (multipart, поле picture опционально)
+POST {{baseUrl}}/measurements/
+Content-Type: multipart/form-data; boundary=WebAppBoundary
+
+--WebAppBoundary
+Content-Disposition: form-data; name="sensor"
+
+1
+--WebAppBoundary
+Content-Disposition: form-data; name="temperature"
+
+22.3
+--WebAppBoundary
+Content-Disposition: form-data; name="picture"; filename="flower.jpg"
+Content-Type: image/jpeg
+
+< ./flower.jpg
+--WebAppBoundary--
+
+###
+
 # получение информации по датчику
 GET {{baseUrl}}/sensors/1/
 Content-Type: application/json

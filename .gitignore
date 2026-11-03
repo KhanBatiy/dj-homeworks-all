@@ -15,5 +15,8 @@ venv/
 ### Project specific ###
 settings_local.py
 
+# загруженные датчиками изображения измерений
+media/
+
 ### OS specific ###
 .DS_Store
