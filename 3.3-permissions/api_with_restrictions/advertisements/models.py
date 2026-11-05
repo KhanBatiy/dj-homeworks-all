@@ -7,6 +7,7 @@ class AdvertisementStatusChoices(models.TextChoices):
 
     OPEN = "OPEN", "Открыто"
     CLOSED = "CLOSED", "Закрыто"
+    DRAFT = "DRAFT", "Черновик"
 
 
 class Advertisement(models.Model):
@@ -28,3 +29,38 @@ class Advertisement(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True
     )
+
+    def __str__(self):
+        return f'{self.title} ({self.status})'
+
+
+class Favorite(models.Model):
+    """Избранное объявление пользователя."""
+
+    user = models.ForeignKey(
+        settings.AUTH_USER_MODEL,
+        on_delete=models.CASCADE,
+        related_name='favorites',
+        verbose_name='пользователь',
+    )
+    advertisement = models.ForeignKey(
+        Advertisement,
+        on_delete=models.CASCADE,
+        related_name='favorited_by',
+        verbose_name='объявление',
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = 'избранное'
+        verbose_name_plural = 'избранное'
+        # одно объявление нельзя добавить в избранное дважды
+        constraints = [
+            models.UniqueConstraint(
+                fields=['user', 'advertisement'],
+                name='unique_favorite_per_user',
+            )
+        ]
+
+    def __str__(self):
+        return f'{self.user} → {self.advertisement}'

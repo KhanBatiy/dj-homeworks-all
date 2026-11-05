@@ -1,8 +1,9 @@
 # примеры API-запросов
 
-@baseUrl = https://localhost:8000/api
+@baseUrl = http://localhost:8000/api
+@token = 566c7d74078a8fb5e6c0761b9d4a988ded0693f1
 
-# получение объявлений
+# получение объявлений (без авторизации; черновики скрыты)
 GET {{baseUrl}}/advertisements/
 Content-Type: application/json
 
@@ -11,7 +12,7 @@ Content-Type: application/json
 # создание объявления
 POST {{baseUrl}}/advertisements/
 Content-Type: application/json
-Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
+Authorization: Token {{token}}
 
 {
   "title": "Шкаф IKEA",
@@ -23,7 +24,7 @@ Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
 # попытка поменять объявление
 PATCH {{baseUrl}}/advertisements/1/
 Content-Type: application/json
-Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
+Authorization: Token {{token}}
 
 {
   "status": "CLOSED"
@@ -32,11 +33,45 @@ Authorization: Token 902ef055a9ac93f18327f1f9c45ab059f1a62c7d
 ###
 
 # фильтрация по создателю
-GET {{baseUrl}}/advertisements/?creator=3
+GET {{baseUrl}}/advertisements/?creator=2
 Content-Type: application/json
 
 ###
 
-# фильтрация по дате
-GET {{baseUrl}}/advertisements/?created_at_before=2020-10-01
+# фильтрация по статусу
+GET {{baseUrl}}/advertisements/?status=OPEN
 Content-Type: application/json
+
+###
+
+# фильтрация по дате (DateFromToRangeFilter)
+GET {{baseUrl}}/advertisements/?created_at_after=2020-01-01&created_at_before=2030-01-01
+Content-Type: application/json
+
+###
+
+# дополнительно: добавить в избранное
+POST {{baseUrl}}/advertisements/2/favorite/
+Content-Type: application/json
+Authorization: Token {{token}}
+
+###
+
+# дополнительно: фильтрация по избранным объявлениям
+GET {{baseUrl}}/advertisements/?favorite=true
+Content-Type: application/json
+Authorization: Token {{token}}
+
+###
+
+# дополнительно: убрать из избранного
+DELETE {{baseUrl}}/advertisements/2/favorite/
+Content-Type: application/json
+Authorization: Token {{token}}
+
+###
+
+# дополнительно: черновик виден только автору
+GET {{baseUrl}}/advertisements/3/
+Content-Type: application/json
+Authorization: Token {{token}}
