@@ -18,5 +18,9 @@ settings_local.py
 # загруженные датчиками изображения измерений
 media/
 
+# pytest
+.pytest_cache/
+.coverage
+
 ### OS specific ###
 .DS_Store

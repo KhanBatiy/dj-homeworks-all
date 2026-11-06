@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -83,6 +84,9 @@ DATABASES = {
         'NAME': 'netology_django_testing',
         'HOST': '127.0.0.1',
         'PORT': '5432',
+        'USER': os.getenv('POSTGRES_USER', 'postgres'),
+        # Пароль не хранится в коде — задавайте его через переменную окружения.
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', ''),
     }
 }
 
@@ -124,3 +128,7 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.1/howto/static-files/
 
 STATIC_URL = '/static/'
+
+
+# Максимальное число студентов на одном курсе.
+MAX_STUDENTS_PER_COURSE = 20
